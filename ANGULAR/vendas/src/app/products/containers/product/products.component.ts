@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ProductCreateComponent } from './../../components/products/product-create/product-create.component';
-import { OperacaoCrud } from './../../shared/enum/enum';
+import { OperacaoCrud } from 'src/app/shared/enum/enum';
+import { ProductCreateComponent } from '../../product-create/product-create.component';
 
 @Component({
   selector: 'app-products',
@@ -13,7 +13,7 @@ export class ProductsComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  openDialog(): void {
+  openDialogAdd(): void {
     const dialogRef = this.dialog.open(ProductCreateComponent, {
       data: {
         OperacaoCrud: OperacaoCrud.Create,
@@ -21,6 +21,6 @@ export class ProductsComponent implements OnInit {
       },
     });
 
-    dialogRef.afterClosed().subscribe((result) => {});
+    // dialogRef.afterClosed().subscribe((result) => {});
   }
 }

@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { lastValueFrom, Observable, of } from 'rxjs';
 import { catchError, delay, first, tap } from 'rxjs/operators';
 import { NotificationsService } from 'src/app/shared/services/notifications/notifications.service';
-import { Product } from '../../model/product.model';
+import { Product } from '../models/product.model';
 
 @Injectable({
   providedIn: 'root',

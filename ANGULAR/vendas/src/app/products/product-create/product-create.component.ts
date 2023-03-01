@@ -1,12 +1,11 @@
-import { Product } from './../../../model/product.model';
-import { catchError } from 'rxjs/operators';
-import { OperacaoCrud } from './../../../shared/enum/enum';
-import { ProductService } from '../product.service';
+
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { OperacaoCrud } from 'src/app/shared/enum/enum';
 import { NotificationsService } from 'src/app/shared/services/notifications/notifications.service';
+import { ProductService } from '../services/product.service';
 
 @Component({
   selector: 'app-product-create',

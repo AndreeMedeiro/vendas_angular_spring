@@ -1,10 +1,9 @@
 import { MatDialog } from '@angular/material/dialog';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Product } from 'src/app/model/product.model';
-import { ProductService } from 'src/app/components/products/product.service';
+import { Product } from 'src/app/products/models/product.model';
+import { ProductService } from 'src/app/products/services/product.service';
 import { OperacaoCrud } from 'src/app/shared/enum/enum';
 import { ProductCreateComponent } from '../product-create/product-create.component';
-import { NotificationsService } from 'src/app/shared/services/notifications/notifications.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort, Sort } from '@angular/material/sort';
@@ -35,7 +34,6 @@ export class ProductListComponent implements OnInit {
   constructor(
     private productService: ProductService,
     public dialog: MatDialog,
-    private notificationService: NotificationsService,
     private liveAnnouncer: LiveAnnouncer
   ) {}
 
@@ -77,10 +75,6 @@ export class ProductListComponent implements OnInit {
   }
 
   announceSortChange(sortState: Sort) {
-    // This example uses English messages. If your application supports
-    // multiple language, you would internationalize these strings.
-    // Furthermore, you can customize the message to add additional
-    // details about the values being sorted.
     if (sortState.direction) {
       this.liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
     } else {

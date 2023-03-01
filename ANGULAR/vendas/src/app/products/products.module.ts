@@ -11,14 +11,14 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
-import { ProductListComponent } from './product-list/product-list.component';
-import { ProductsComponent } from 'src/app/pages/products/products.component';
-import { ProductCreateComponent } from './product-create/product-create.component';
 import { ProductSearchComponent } from './product-search/product-search.component';
 import { MatRadioModule } from '@angular/material/radio';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatSortModule} from '@angular/material/sort';
+import { ProductListComponent } from './product-list/product-list.component';
+import { ProductCreateComponent } from './product-create/product-create.component';
+import { ProductsComponent } from './containers/product/products.component';
 
 @NgModule({
   declarations: [
