@@ -1,0 +1,8 @@
+.buttons-card{
+  display: flex;
+  justify-content: space-between;
+}
+
+.buttonAdd{
+  margin-left: 15px;
+}

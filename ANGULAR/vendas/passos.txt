@@ -1,0 +1,5 @@
+
+1 - criar template(header, nav, footer)
+2 - criar menu navs
+3 - criar estrutura de pastas(components\modules)
+4 - criar rotas

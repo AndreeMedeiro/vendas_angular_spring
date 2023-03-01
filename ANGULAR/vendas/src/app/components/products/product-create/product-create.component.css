@@ -1,0 +1,19 @@
+form{
+    display: flex;
+    flex-direction: column;
+}
+
+mat-card{
+  /* padding: 10px; */
+  width: 300px;
+}
+/* para remover incremento e decremento do botão tipo number */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* [hidden] {
+  display: none !important;
+} */

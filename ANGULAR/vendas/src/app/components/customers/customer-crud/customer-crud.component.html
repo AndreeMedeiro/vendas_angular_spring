@@ -1,0 +1,106 @@
+<mat-card class="card">
+  <mat-card-content>
+    <mat-card-title>Cadastro de Clientes</mat-card-title>
+    <form [formGroup]="customerForm">
+      <div class="row">
+        <div class="col2">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Nome" formControlName="nome" />
+            <mat-error *ngIf="customerForm.value.nome == ''">O nome é obrigatorio!</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col1">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Cpf" formControlName="cpf" mask="CPF_CNPJ" [dropSpecialCharacters]="false" />
+            <mat-error *ngIf="customerForm.value.cpf == ''">O cpf é obrigatorio!</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col2">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="E-mail" formControlName="email" />
+            <mat-error *ngIf="customerForm.value.email == ''">O e-mail é obrigatorio!</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col1">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Celular" formControlName="celular" mask="(00) 00000-0000" [dropSpecialCharacters]="false"/>
+            <mat-error *ngIf="customerForm.value.celular == ''">O celular é obrigatorio!</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row" formGroupName="endereco">
+        <div class="col1">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Cep" formControlName="cep" mask="00.000.000" (blur)="buscaCep()" />
+            <mat-error *ngIf="customerForm.value.endereco?.cep == ''">O celular é obrigatorio!</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col2">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Endereço" formControlName="rua" />
+            <mat-error *ngIf="customerForm.value.endereco?.rua == ''">O endereço é obrigatorio!</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row" formGroupName="endereco">
+        <div class="col1">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Numero" formControlName="numero" />
+            <mat-error *ngIf="customerForm.value.endereco?.numero == ''">O numero é obrigatorio!</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col1">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Complemento" formControlName="complemento" />
+            <mat-error *ngIf="customerForm.value.endereco?.complemento == ''">O complemento é obrigatorio!</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col1">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Bairro" formControlName="bairro" />
+            <mat-error *ngIf="customerForm.value.endereco?.bairro == ''">O celular é obrigatorio!</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row" formGroupName="endereco">
+        <div class="col2">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Cidade" formControlName="cidade" />
+            <mat-error *ngIf="customerForm.value.endereco?.cidade == ''">A cidade é obrigatoria!</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col1">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Estado" formControlName="estado" />
+            <mat-error *ngIf="customerForm.value.endereco?.estado == ''">O estado é obrigatorio!</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+
+    <div mat-dialog-actions>
+      <button mat-raised-button color="primary" *ngIf="enabledButtonSave" (click)="save()" [disabled]="!customerForm.valid">
+        Salvar
+      </button>
+      <button mat-raised-button color="primary" *ngIf="enabledButtonDelete" (click)="delete()" >
+        Apagar
+      </button>
+      <button mat-raised-button color="warn" (click)="cancel()">
+        Cancelar
+      </button>
+    </div>
+  </mat-card-content>
+</mat-card>
+<span >{{operacaoCrud}}</span>
+<!-- {{customerForm.value | json}} -->

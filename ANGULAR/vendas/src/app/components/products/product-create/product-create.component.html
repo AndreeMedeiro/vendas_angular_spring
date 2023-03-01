@@ -1,0 +1,34 @@
+<mat-card >
+  <mat-card-content class="mat-elevation-z4">
+    <mat-card-title>Cadastro de Produtos</mat-card-title>
+
+  <form [formGroup]="productForm">
+    <mat-form-field>
+      <input matInput placeholder="Código de Barras" formControlName="code">
+      <mat-error *ngIf="productForm.value.code ==''">O Código de Barras é Obrigatorio!</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Descrição" formControlName="description">
+      <!-- <mat-error *ngIf="!productForm.value.descricao">O Código de Barras é Obrigatorio!</mat-error> -->
+      <mat-error *ngIf="productForm!.value!.description! != null && productForm!.value!.description!.length< 3">A Descrição precisa ter ao menos 3 caracteres!</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Preço" formControlName="price" type="number" >
+      <mat-error *ngIf="+productForm!.value!.price! <=0 ">O preço precisa ser maior que 0!</mat-error>
+    </mat-form-field>
+  </form>
+
+  <div mat-dialog-actions>
+    <button mat-raised-button (click)="save()" [disabled]="!productForm.valid" color="primary" *ngIf="enableButtonSave">Salvar</button>
+    <button mat-raised-button (click)="delete()" color="primary" *ngIf="enableButtonDelete">Apagar</button>
+    <button mat-raised-button (click)="cancel()" color="warn">Cancelar</button>
+  </div>
+
+  </mat-card-content>
+
+
+
+
+</mat-card>

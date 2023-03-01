@@ -1,0 +1,54 @@
+<div *ngIf="customers.length >0; else naoHaDados">
+  <table mat-table [dataSource]="customers" class="mat-elevation-z8" multiTemplateDataRows="">
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>Id</th>
+      <td mat-cell *matCellDef="let customer">{{ customer.id }}</td>
+    </ng-container>
+    <ng-container matColumnDef="nome">
+      <th mat-header-cell *matHeaderCellDef>Nome</th>
+      <td mat-cell *matCellDef="let customer">{{ customer.nome }}</td>
+    </ng-container>
+    <ng-container matColumnDef="cpf">
+      <th mat-header-cell *matHeaderCellDef>Cpf</th>
+      <td mat-cell *matCellDef="let customer">
+        {{ customer.cpf | mask : "CPF_CNPJ" }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="telefone">
+      <th mat-header-cell *matHeaderCellDef>Telefone</th>
+      <td mat-cell *matCellDef="let customer">
+        {{ customer.celular | mask : "(00) 00000-0000" }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef>E-mail</th>
+      <td mat-cell *matCellDef="let customer">{{ customer.email }}</td>
+    </ng-container>
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef>Ações</th>
+      <td mat-cell *matCellDef="let row">
+        <button mat-icon-button matTooltip="Primary" (click)="editClick(row.id)" color="primary"
+          aria-label="Editar Produto">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button matTooltip="Primary" (click)="deleteClick(row.id)" color="warn"
+          aria-label="Apagar produto">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+    -->
+    <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
+  </table>
+
+</div>
+
+<ng-template #naoHaDados>
+  <mat-card>
+    <mat-card-content>
+      <mat-card-title>Não foram encontrados dados!</mat-card-title>
+
+    </mat-card-content>
+  </mat-card>
+</ng-template>

@@ -1,0 +1,29 @@
+
+<div class="buttons-card">
+  <div>
+    <mat-form-field appearance="outline">
+      <mat-label>Pesquisa Clientes</mat-label>
+      <input matInput placeholder="Ex: Fuluno" [mask]="mascaraPesquisa" [dropSpecialCharacters]="false"  [(ngModel)] = "textoPesquisa">
+     </mat-form-field>
+      <mat-radio-group aria-label="Selecione um criterio">
+        <mat-radio-button value="1" [checked]="tipoPesquisaCliente == 1" (change)="toggleTipoPesquisa(1)">Nome</mat-radio-button>
+        <mat-radio-button value="2" [checked]="tipoPesquisaCliente == 2" (change)="toggleTipoPesquisa(2)">E-mail</mat-radio-button>
+        <mat-radio-button value="3" [checked]="tipoPesquisaCliente == 3" (change)="toggleTipoPesquisa(3)">Cpf</mat-radio-button>
+        <mat-radio-button value="4" [checked]="tipoPesquisaCliente == 4" (change)="toggleTipoPesquisa(4)">Celular</mat-radio-button>
+        <mat-radio-button value="5" [checked]="tipoPesquisaCliente == 5" (change)="toggleTipoPesquisa(5)">Codigo</mat-radio-button>
+      </mat-radio-group>
+  </div>
+
+  <div *ngIf="loading">
+    <mat-spinner></mat-spinner>
+  </div>
+  <div>
+    <button mat-fab color="primary" (click)="search()" aria-label="Pesquisar Cliente" >
+      <mat-icon>search</mat-icon>
+    </button>
+    <button mat-fab color="primary" (click)="openDialog()" aria-label="Adicionar um cliente" class="buttonAdd" >
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+
+</div>
