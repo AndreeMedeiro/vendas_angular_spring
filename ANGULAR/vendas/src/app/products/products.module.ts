@@ -4,8 +4,8 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../shared/material/material.module';
 import { ProductsComponent } from './containers/product/products.component';
-import { ProductCreateComponent } from './product-create/product-create.component';
-import { ProductListComponent } from './product-list/product-list.component';
+import { ProductCreateComponent } from './containers/product-create/product-create.component';
+import { ProductListComponent } from './components/product-list/product-list.component';
 import { ProductSearchComponent } from './product-search/product-search.component';
 import { ProductsRoutingModule } from './products-routing.module';
 

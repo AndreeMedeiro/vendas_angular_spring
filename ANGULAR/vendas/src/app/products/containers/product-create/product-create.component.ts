@@ -5,7 +5,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { OperacaoCrud } from 'src/app/shared/enum/enum';
 import { NotificationsService } from 'src/app/shared/services/notifications/notifications.service';
-import { ProductService } from '../services/product.service';
+import { ProductService } from '../../services/product.service';
 
 @Component({
   selector: 'app-product-create',

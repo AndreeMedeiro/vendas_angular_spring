@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { catchError, of } from 'rxjs';
 import { OperacaoCrud, TipoPesquisaCliente, TypeSearchProduct } from 'src/app/shared/enum/enum';
-import { NotificationsService } from 'src/app/shared/services/notifications/notifications.service';
-import { ProductCreateComponent } from '../product-create/product-create.component';
+import { ProductCreateComponent } from '../containers/product-create/product-create.component';
 import { ProductService } from '../services/product.service';
 
 @Component({

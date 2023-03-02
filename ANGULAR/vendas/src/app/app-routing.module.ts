@@ -6,7 +6,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { CustomersComponent } from './pages/customers/customers.component';
-import { ProductCreateComponent } from './products/product-create/product-create.component';
+import { ProductCreateComponent } from './products/containers/product-create/product-create.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },
