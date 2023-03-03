@@ -1,10 +1,14 @@
 <mat-card>
   <mat-card-content class="mat-elevation-z4">
     <mat-card-title>Produtos</mat-card-title>
-    <app-product-search></app-product-search>
-    <app-product-list [products]="products"
-                      (delete)="delete($event)"
-                      (edit)="edit($event)"
+    <app-product-search
+      (infoProductSearch)="search($event)"
+      (add)="add()">
+    </app-product-search>
+    <app-product-list
+      [products]="products"
+      (delete)="delete($event)"
+      (edit)="edit($event)"
     ></app-product-list>
   </mat-card-content>
 </mat-card>

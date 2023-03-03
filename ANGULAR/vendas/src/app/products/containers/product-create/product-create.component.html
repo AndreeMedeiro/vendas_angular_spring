@@ -4,17 +4,21 @@
 
   <form [formGroup]="productForm">
     <mat-form-field>
-      <input matInput placeholder="Código de Barras" formControlName="code">
-      <mat-error *ngIf="productForm.value.code ==''">O Código de Barras é Obrigatorio!</mat-error>
+      <mat-label>Código</mat-label>
+      <input matInput placeholder="Código" formControlName="code">
+      <mat-spinner matSuffix diameter="20" *ngIf="code.status === 'PENDING'"></mat-spinner>
+      <mat-error *ngIf="productForm.value.code ==''">O Código é Obrigatorio!</mat-error>
+      <mat-error *ngIf="code?.errors?.['invalidAsync']">O Código já está em uso!</mat-error>
     </mat-form-field>
-
     <mat-form-field>
+      <mat-label>Descrição</mat-label>
       <input matInput placeholder="Descrição" formControlName="description">
       <!-- <mat-error *ngIf="!productForm.value.descricao">O Código de Barras é Obrigatorio!</mat-error> -->
       <mat-error *ngIf="productForm!.value!.description! != null && productForm!.value!.description!.length< 3">A Descrição precisa ter ao menos 3 caracteres!</mat-error>
     </mat-form-field>
 
     <mat-form-field>
+      <mat-label>Preço</mat-label>
       <input matInput placeholder="Preço" formControlName="price" type="number" >
       <mat-error *ngIf="+productForm!.value!.price! <=0 ">O preço precisa ser maior que 0!</mat-error>
     </mat-form-field>

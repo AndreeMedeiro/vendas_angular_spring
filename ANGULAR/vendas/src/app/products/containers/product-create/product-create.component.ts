@@ -1,11 +1,12 @@
-
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { tap } from 'rxjs';
 import { OperacaoCrud } from 'src/app/shared/enum/enum';
 import { NotificationsService } from 'src/app/shared/services/notifications/notifications.service';
 import { ProductService } from '../../services/product.service';
+import { ProductValidator } from '../../validators/product.validator';
 
 @Component({
   selector: 'app-product-create',
@@ -22,18 +23,42 @@ export class ProductCreateComponent implements OnInit {
 
   productForm = this.fb.group({
     id: [0],
-    code: ['', [Validators.required, Validators.maxLength(10)]],
-    price: ['0.00', [Validators.required, Validators.pattern(this.numRegex)]],
-    description: ['', [Validators.required, Validators.maxLength(20), Validators.minLength(3)],],
+    code: [
+      '',
+      {
+        validators: [Validators.required, Validators.maxLength(15)],
+        asyncValidators: [this.productValidador.codeInUse(this.productService)],
+        updateOn: 'blur'
+      }
+    ],
+    price: ['0.00',{
+      validators:[Validators.required, Validators.pattern(this.numRegex)],
+      asyncValidators:[],
+      updateOn: 'blur'
+    }],
+
+    description: [
+      '',
+      {
+        validators:[Validators.required, Validators.maxLength(20), Validators.minLength(3)],
+        asyncValidators:[],
+        updateOn: 'blur'
+      }
+
+    ],
   });
+
+  get code() {
+    return this.productForm.controls['code'];
+  }
 
   constructor(
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<ProductCreateComponent>,
     private productService: ProductService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private snackBar: MatSnackBar,
-    private notificationsService: NotificationsService
+    private notificationsService: NotificationsService,
+    private productValidador: ProductValidator
   ) {
     switch (data.operacaoCrud) {
       case 1: {
@@ -80,28 +105,26 @@ export class ProductCreateComponent implements OnInit {
         this.productService
           .create(this.productForm.value)
           .subscribe(async (product) => {
-             if (product.id > 0 ){
-              this.idProduct = product.id
-              await this.productService.readByIdList(product.id)
-             }
+            if (product.id > 0) {
+              this.idProduct = product.id;
+              await this.productService.readByIdList(product.id);
+            }
           });
         this.dialogRef.close(true);
         this.productForm.reset();
-
       } else if (this.operacaoCrud == OperacaoCrud.Update) {
-        this.productService.update(this.productForm.value).subscribe(async(product) => {
-          if (product.id > 0 ){
-            this.idProduct = product.id
-            await this.productService.readByIdList(product.id)
-           }
-        });
+        this.productService
+          .update(this.productForm.value)
+          .subscribe(async (product) => {
+            if (product.id > 0) {
+              this.idProduct = product.id;
+              await this.productService.readByIdList(product.id);
+            }
+          });
         this.dialogRef.close(true);
         this.productForm.reset();
-
       }
-
     }
-
   }
 
   delete() {
@@ -118,37 +141,34 @@ export class ProductCreateComponent implements OnInit {
 
   verificaProduto() {
     if (this.operacaoCrud != OperacaoCrud.Create) {
-      this.productService
-        .readById(this.idProduct)
-        .subscribe((products) => {
-          this.productForm.patchValue({
-            id: Number(products!.id!.toString()),
-            code: products.code,
-            description: products.description,
-            price: products?.price?.toString(),
-          });
-
-          if (this.operacaoCrud != OperacaoCrud.Update) {
-            this.productForm.get('code')?.disable();
-            this.productForm.get('description')?.disable();
-            this.productForm.get('price')?.disable();
-          }
+      this.productService.readById(this.idProduct).subscribe((products) => {
+        this.productForm.patchValue({
+          id: Number(products!.id!.toString()),
+          code: products.code,
+          description: products.description,
+          price: products?.price?.toString(),
         });
+
+        if (this.operacaoCrud != OperacaoCrud.Update) {
+          this.productForm.get('code')?.disable();
+          this.productForm.get('description')?.disable();
+          this.productForm.get('price')?.disable();
+        }
+      });
     }
 
     this.enableButtonSave =
       this.operacaoCrud == OperacaoCrud.Create ||
       this.operacaoCrud == OperacaoCrud.Update;
-    this.enableButtonDelete = this.operacaoCrud == OperacaoCrud.Delete
+    this.enableButtonDelete = this.operacaoCrud == OperacaoCrud.Delete;
   }
 
   async validaInformacoesAdicionaisDoProduto(): Promise<boolean> {
-
-    var productResult =  await this.productService.readByCode(
-      this.productForm?.value?.code ?? '0'
+    var productResult = await this.productService.readByCode(
+      this.productForm.value.code!.toString()
     );
 
-    console.log(productResult)
+    console.log(productResult);
 
     if (productResult == null || productResult.length == 0) {
       return true;
@@ -171,7 +191,7 @@ export class ProductCreateComponent implements OnInit {
       );
       return false;
     } else {
-       return true;
+      return true;
     }
   }
 }

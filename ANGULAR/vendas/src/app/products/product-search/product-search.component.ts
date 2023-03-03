@@ -1,54 +1,43 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { OperacaoCrud, TipoPesquisaCliente, TypeSearchProduct } from 'src/app/shared/enum/enum';
+import { OperacaoCrud, TypeSearchProduct } from 'src/app/shared/enum/enum';
 import { ProductCreateComponent } from '../containers/product-create/product-create.component';
-import { ProductService } from '../services/product.service';
+import { ProductFilterSearch } from '../models/product-filter-search';
 
 @Component({
   selector: 'app-product-search',
   templateUrl: './product-search.component.html',
-  styleUrls: ['./product-search.component.css']
+  styleUrls: ['./product-search.component.css'],
 })
 export class ProductSearchComponent {
-  typeSearchProduct: TypeSearchProduct;
-  searchText: String = ''
+  @Output() infoProductSearch: EventEmitter<ProductFilterSearch> =
+    new EventEmitter(false);
 
-  constructor(
-    public dialog: MatDialog,
-    private productService: ProductService,
-  ) {
-    this.typeSearchProduct = TypeSearchProduct.Code
+  @Output() add: EventEmitter<''> = new EventEmitter(false);
+
+  productFilterSearch: ProductFilterSearch = {
+    typeSearch: TypeSearchProduct.Code,
+    textSearch: '',
+  };
+  typeSearchProduct: TypeSearchProduct;
+  searchText: String = '';
+
+  constructor(public dialog: MatDialog) {
+    this.typeSearchProduct = TypeSearchProduct.Code;
   }
 
   toggleTipoPesquisa(tipo: TypeSearchProduct) {
-    console.log(tipo);
     this.typeSearchProduct = tipo;
-
   }
 
-  openDialog(): void {
-    const dialogRef = this.dialog.open(ProductCreateComponent, {
-      data: {
-        OperacaoCrud: OperacaoCrud.Create,
-        id:0
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-    });
+  addclick(): void {
+    this.add.emit('');
   }
 
   async search() {
-    switch (this.typeSearchProduct) {
-      case TypeSearchProduct.Description: {
-        this.productService.readByDescription(this.searchText.toString());
-        break;
-      }
-      case TypeSearchProduct.Code: {
-        this.productService.readByCode(this.searchText.toString())
-        break;
-      }
-    }
-  }
+    this.productFilterSearch!.typeSearch = this.typeSearchProduct;
+    this.productFilterSearch!.textSearch = this.searchText.toString();
 
+    this.infoProductSearch.emit(this.productFilterSearch);
+  }
 }

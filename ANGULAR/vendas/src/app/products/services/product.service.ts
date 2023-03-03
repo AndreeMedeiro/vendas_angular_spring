@@ -1,8 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { EventEmitter, Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { lastValueFrom, Observable, of } from 'rxjs';
-import { catchError, delay, first, tap } from 'rxjs/operators';
+import { catchError, delay, first, map, tap } from 'rxjs/operators';
 import { NotificationsService } from 'src/app/shared/services/notifications/notifications.service';
 import { Product } from '../models/product.model';
 
@@ -16,16 +15,13 @@ export class ProductService {
 
   searchProductListEmitter = new EventEmitter<Product[]>();
 
-
   constructor(
     private http: HttpClient,
     private notiticationService: NotificationsService
   ) {}
 
   read(): Observable<Product[]> {
-    return this.http.get<Product[]>(this.baseUrl).pipe(
-      first(),
-    )
+    return this.http.get<Product[]>(this.baseUrl).pipe(first());
   }
 
   create(product: any): Observable<Product> {
@@ -44,7 +40,7 @@ export class ProductService {
     await lastValueFrom(this.http.get<Product>(url))
       .then((products) => {
         productList.push(products);
-        this.searchProductListEmitter.emit(productList);
+        // this.searchProductListEmitter.emit(productList);
       })
       .catch((error) => {
         this.notiticationService.showMessage(
@@ -54,7 +50,6 @@ export class ProductService {
       });
 
     return productList;
-
   }
 
   async readByCode(codigo: string): Promise<Product[]> {
@@ -75,6 +70,17 @@ export class ProductService {
       });
 
     return productList;
+  }
+
+  readByCode2(codigo: string) {
+    const url = `${this.baseUrl}/Code/${codigo}`;
+    return this.http.get<Product[]>(url).pipe(
+      first(),
+      catchError((e) => {
+        console.log(e)
+        return of([]);
+      })
+    );
   }
 
   async readByDescription(description: string): Promise<Product[]> {
@@ -105,20 +111,4 @@ export class ProductService {
     const url = `${this.baseUrl}/${id}`;
     return this.http.delete(url);
   }
-
-  // showMessage(msg: string, isError: boolean = false): void {
-  //   console.log('teste')
-  //   this.snackBar.open(msg, 'X', {
-  //     duration: 3000,
-  //     horizontalPosition: 'right',
-  //     verticalPosition: 'top',
-  //     panelClass: isError ? ['msg-error'] : ['msg-sucess']
-  //   })
-  // }
-
-  // errorHandler(e: any): Observable<any> {
-  //   console.log(e)
-  //   this.showMessage('Ocorreu um erro!', true);
-  //   return EMPTY;
-  // }
 }

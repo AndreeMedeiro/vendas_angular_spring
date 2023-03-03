@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { OperacaoCrud } from 'src/app/shared/enum/enum';
+import { OperacaoCrud, TypeSearchProduct } from 'src/app/shared/enum/enum';
 import { Product } from '../../models/product.model';
 import { ProductCreateComponent } from '../product-create/product-create.component';
 import { ProductService } from '../../services/product.service';
+import { ProductFilterSearch } from '../../models/product-filter-search';
 
 @Component({
   selector: 'app-products',
@@ -63,4 +64,20 @@ export class ProductsComponent implements OnInit {
     //   console.log('The dialog was closed');
     // });
   }
+
+  search(productFilterInfo: ProductFilterSearch){
+
+    switch (productFilterInfo.typeSearch) {
+      case TypeSearchProduct.Description: {
+        this.productService.readByDescription(productFilterInfo.textSearch.toString());
+        break;
+      }
+      case TypeSearchProduct.Code: {
+        console.log(productFilterInfo.textSearch.toString())
+        this.productService.readByCode(productFilterInfo.textSearch.toString())
+        break;
+      }
+    }
+  }
 }
+
