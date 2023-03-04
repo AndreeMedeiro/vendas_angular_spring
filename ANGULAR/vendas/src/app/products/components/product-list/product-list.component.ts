@@ -32,13 +32,17 @@ export class ProductListComponent implements OnInit {
 
   constructor(public dialog: MatDialog, private liveAnnouncer: LiveAnnouncer) {}
 
-  ngOnInit(): void {}
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.paginator._intl.itemsPerPageLabel = 'Itens por página';
+  }
+  ngOnInit(): void {
+  }
 
   ngOnChanges() {
     if (this.products.length > 0) {
       this.dataSource = new MatTableDataSource(this.products);
       this.dataSource.paginator = this.paginator;
-      this.paginator._intl.itemsPerPageLabel = 'Itens por página';
       this.dataSource.sort = this.sort;
     }
   }

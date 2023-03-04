@@ -6,9 +6,17 @@
       (add)="add()">
     </app-product-search>
     <app-product-list
+    *ngIf="products$ | async as products; else loading"
       [products]="products"
       (delete)="delete($event)"
       (edit)="edit($event)"
     ></app-product-list>
+
+    <ng-template #loading>
+      <div class = "spinner">
+        <mat-spinner></mat-spinner>
+      </div>
+    </ng-template>
+
   </mat-card-content>
 </mat-card>

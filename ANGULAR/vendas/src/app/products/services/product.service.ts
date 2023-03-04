@@ -13,14 +13,14 @@ export class ProductService {
   // private readonly baseUrl = 'http://192.168.0.5:8080/api/products';
   private readonly baseUrl = 'api/products';
 
-  searchProductListEmitter = new EventEmitter<Product[]>();
+  searchProductListEmitter = new EventEmitter<Observable<Product[]>>();
 
   constructor(
     private http: HttpClient,
     private notiticationService: NotificationsService
   ) {}
 
-  read(): Observable<Product[]> {
+  get(): Observable<Product[]> {
     return this.http.get<Product[]>(this.baseUrl).pipe(first());
   }
 
@@ -29,82 +29,35 @@ export class ProductService {
     return this.http.post<Product>(this.baseUrl, product).pipe();
   }
 
-  readById(id: number): Observable<Product> {
+  getById(id: number): Observable<Product> {
     const url = `${this.baseUrl}/${id}`;
     return this.http.get<Product>(url);
   }
 
-  async readByIdList(id: number): Promise<Product[]> {
-    const url = `${this.baseUrl}/${id}`;
-    let productList: Product[] = [];
-    await lastValueFrom(this.http.get<Product>(url))
-      .then((products) => {
-        productList.push(products);
-        // this.searchProductListEmitter.emit(productList);
-      })
-      .catch((error) => {
-        this.notiticationService.showMessage(
-          'Ocorreu um erro ao buscar os produtos!'
-        );
-        return [];
-      });
-
-    return productList;
-  }
-
-  async readByCode(codigo: string): Promise<Product[]> {
+  getByCode(codigo: string) {
     const url = `${this.baseUrl}/Code/${codigo}`;
-
-    let productList: Product[] = [];
-
-    await lastValueFrom(this.http.get<Product[]>(url))
-      .then((products) => {
-        productList = products;
-        this.searchProductListEmitter.emit(productList);
-      })
-      .catch((error) => {
-        this.notiticationService.showMessage(
-          'Ocorreu um erro ao buscar os produtos!'
-        );
-        return [];
-      });
-
-    return productList;
+    return  this.http.get<Product[]>(url).pipe(delay(1000));
   }
 
-  readByCode2(codigo: string) {
+  getByCode2(codigo: string) {
     const url = `${this.baseUrl}/Code/${codigo}`;
     return this.http.get<Product[]>(url).pipe(
       first(),
       catchError((e) => {
-        console.log(e)
+        console.log(e);
         return of([]);
       })
     );
   }
 
-
-  async readByDescription(description: string): Promise<Product[]> {
+  getByDescription(description: string) {
     const url = `${this.baseUrl}/description/${description}`;
-    let productList: Product[] = [];
-    await lastValueFrom(this.http.get<Product[]>(url))
-      .then((products) => {
-        productList = products;
-        this.searchProductListEmitter.emit(productList);
-      })
-      .catch(() => {
-        this.notiticationService.showMessage(
-          'Ocorreu um erro ao buscar os produtos!'
-        );
-        return [];
-      });
-
-    return productList;
+    return this.http.get<Product[]>(url).pipe(delay(2000));
   }
+
   update(product: any): Observable<Product> {
     console.log(product);
     const url = `${this.baseUrl}/${product.id}`;
-    //return this.http.put<Product>(url, product);
     return this.http.put<Product>(url, product);
   }
 

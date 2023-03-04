@@ -1,15 +1,9 @@
 import { Injectable } from '@angular/core';
 import {
   AbstractControl,
-  AsyncValidatorFn,
-  FormControl,
-  FormGroup,
-  FormGroupDirective,
-  NgForm,
-  ValidationErrors,
+  AsyncValidatorFn, FormGroup
 } from '@angular/forms';
-import { ErrorStateMatcher } from '@angular/material/core';
-import { catchError, delay, map, Observable, tap } from 'rxjs';
+import { delay, map } from 'rxjs';
 import { ProductService } from '../services/product.service';
 
 @Injectable({ providedIn: 'root' })
@@ -31,7 +25,7 @@ export class ProductValidator {
       const code: string = form.get('code')?.value;
       const id: Number = form.get('id')?.value;
 
-      return productService.readByCode2(code).pipe(
+      return productService.getByCode(code).pipe(
         delay(2000),
         map((result) => {
           var containsError =

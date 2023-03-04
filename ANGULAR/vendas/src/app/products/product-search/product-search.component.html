@@ -5,7 +5,7 @@
       <input matInput placeholder="" [(ngModel)] = "searchText">
      </mat-form-field>
       <mat-radio-group aria-label="Selecione um criterio">
-        <!-- <mat-radio-button value="1" [checked]="typeSearchProduct == 1" (change)="toggleTipoPesquisa(1)">Id</mat-radio-button> -->
+        <mat-radio-button value="1" [checked]="typeSearchProduct == 1" (change)="toggleTipoPesquisa(1)">Id</mat-radio-button>
         <mat-radio-button value="2" [checked]="typeSearchProduct== 2" (change)="toggleTipoPesquisa(2)">Código</mat-radio-button>
         <mat-radio-button value="3" [checked]="typeSearchProduct == 3" (change)="toggleTipoPesquisa(3)">Descrição</mat-radio-button>
       </mat-radio-group>

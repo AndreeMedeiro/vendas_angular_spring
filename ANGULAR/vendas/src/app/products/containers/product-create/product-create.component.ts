@@ -1,8 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { tap } from 'rxjs';
 import { OperacaoCrud } from 'src/app/shared/enum/enum';
 import { NotificationsService } from 'src/app/shared/services/notifications/notifications.service';
 import { ProductService } from '../../services/product.service';
@@ -65,7 +63,7 @@ export class ProductCreateComponent implements OnInit {
       code: [
         '',
         {
-          validators: [Validators.required, Validators.maxLength(15)],
+          validators: [Validators.required, Validators.maxLength(30)],
           // asyncValidators: [this.productValidador.codeInUse2(this.productService)],
           updateOn: 'blur',
         },
@@ -84,7 +82,7 @@ export class ProductCreateComponent implements OnInit {
         {
           validators: [
             Validators.required,
-            Validators.maxLength(20),
+            Validators.maxLength(50),
             Validators.minLength(3),
           ],
           asyncValidators: [],
@@ -102,47 +100,35 @@ export class ProductCreateComponent implements OnInit {
     return this.productForm.controls['code'];
   }
 
-
   cancel(): void {
     this.dialogRef.close();
     this.productForm.reset();
   }
 
-  async save() {
-    var isProductValid: boolean = false;
-
-    isProductValid = await this.validaInformacoesAdicionaisDoProduto();
-
-    if (this.productForm.valid && isProductValid) {
+  save() {
+    if (this.productForm.valid) {
       if (this.operacaoCrud == OperacaoCrud.Create) {
         this.productService
           .create(this.productForm.value)
-          .subscribe(async (product) => {
-            if (product.id > 0) {
-              this.idProduct = product.id;
-              await this.productService.readByIdList(product.id);
-            }
+          .subscribe(product => {
+            this.idProduct = product.id
+            this.dialogRef.close(this.idProduct);
+            this.productForm.reset();
           });
-        this.dialogRef.close(true);
-        this.productForm.reset();
+
       } else if (this.operacaoCrud == OperacaoCrud.Update) {
         this.productService
           .update(this.productForm.value)
-          .subscribe(async (product) => {
-            if (product.id > 0) {
-              this.idProduct = product.id;
-              await this.productService.readByIdList(product.id);
-            }
+          .subscribe(product => {
+            this.idProduct = product.id
+            this.dialogRef.close(this.idProduct);
+            this.productForm.reset();
           });
-        this.dialogRef.close(true);
-        this.productForm.reset();
       }
     }
   }
 
   delete() {
-    console.log(this.productForm.value);
-
     this.productService
       .deleteById(this.idProduct.toString())
       .subscribe((products) => {
@@ -154,7 +140,7 @@ export class ProductCreateComponent implements OnInit {
 
   verificaProduto() {
     if (this.operacaoCrud != OperacaoCrud.Create) {
-      this.productService.readById(this.idProduct).subscribe((products) => {
+      this.productService.getById(this.idProduct).subscribe((products) => {
         this.productForm.patchValue({
           id: Number(products!.id!.toString()),
           code: products.code,
@@ -173,38 +159,7 @@ export class ProductCreateComponent implements OnInit {
     this.enableButtonSave =
       this.operacaoCrud == OperacaoCrud.Create ||
       this.operacaoCrud == OperacaoCrud.Update;
+
     this.enableButtonDelete = this.operacaoCrud == OperacaoCrud.Delete;
-  }
-
-  async validaInformacoesAdicionaisDoProduto(): Promise<boolean> {
-    var productResult = await this.productService.readByCode(
-      this.productForm.value.code!.toString()
-    );
-
-    console.log(productResult);
-
-    if (productResult == null || productResult.length == 0) {
-      return true;
-    } else if (
-      productResult[0].id != this.idProduct &&
-      this.operacaoCrud == OperacaoCrud.Update
-    ) {
-      this.notificationsService.showMessage(
-        'O código de barras já está vinculado a outro produto!',
-        true
-      );
-      return false;
-    } else if (
-      productResult[0].id > 0 &&
-      this.operacaoCrud == OperacaoCrud.Create
-    ) {
-      this.notificationsService.showMessage(
-        'O código de barras já está vinculado a outro produto!',
-        true
-      );
-      return false;
-    } else {
-      return true;
-    }
   }
 }
