@@ -83,6 +83,7 @@ export class ProductService {
     );
   }
 
+
   async readByDescription(description: string): Promise<Product[]> {
     const url = `${this.baseUrl}/description/${description}`;
     let productList: Product[] = [];
@@ -91,7 +92,7 @@ export class ProductService {
         productList = products;
         this.searchProductListEmitter.emit(productList);
       })
-      .catch((error) => {
+      .catch(() => {
         this.notiticationService.showMessage(
           'Ocorreu um erro ao buscar os produtos!'
         );

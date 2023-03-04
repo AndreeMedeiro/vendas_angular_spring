@@ -21,37 +21,6 @@ export class ProductCreateComponent implements OnInit {
 
   numRegex = /^-?\d*[.,]?\d{0,2}$/;
 
-  productForm = this.fb.group({
-    id: [0],
-    code: [
-      '',
-      {
-        validators: [Validators.required, Validators.maxLength(15)],
-        asyncValidators: [this.productValidador.codeInUse(this.productService)],
-        updateOn: 'blur'
-      }
-    ],
-    price: ['0.00',{
-      validators:[Validators.required, Validators.pattern(this.numRegex)],
-      asyncValidators:[],
-      updateOn: 'blur'
-    }],
-
-    description: [
-      '',
-      {
-        validators:[Validators.required, Validators.maxLength(20), Validators.minLength(3)],
-        asyncValidators:[],
-        updateOn: 'blur'
-      }
-
-    ],
-  });
-
-  get code() {
-    return this.productForm.controls['code'];
-  }
-
   constructor(
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<ProductCreateComponent>,
@@ -89,6 +58,50 @@ export class ProductCreateComponent implements OnInit {
   ngOnInit(): void {
     this.verificaProduto();
   }
+
+  productForm = this.fb.group(
+    {
+      id: [0],
+      code: [
+        '',
+        {
+          validators: [Validators.required, Validators.maxLength(15)],
+          // asyncValidators: [this.productValidador.codeInUse2(this.productService)],
+          updateOn: 'blur',
+        },
+      ],
+      price: [
+        '0.00',
+        {
+          validators: [Validators.required, Validators.pattern(this.numRegex)],
+          asyncValidators: [],
+          updateOn: 'blur',
+        },
+      ],
+
+      description: [
+        '',
+        {
+          validators: [
+            Validators.required,
+            Validators.maxLength(20),
+            Validators.minLength(3),
+          ],
+          asyncValidators: [],
+          updateOn: 'blur',
+        },
+      ],
+    },
+    {
+      asyncValidators: [this.productValidador.codeInUse(this.productService)],
+      updateOn: 'change',
+    }
+  );
+
+  get code() {
+    return this.productForm.controls['code'];
+  }
+
 
   cancel(): void {
     this.dialogRef.close();
