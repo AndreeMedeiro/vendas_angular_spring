@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { catchError } from 'rxjs';
 import { OperacaoCrud } from 'src/app/shared/enum/enum';
 import { NotificationsService } from 'src/app/shared/services/notifications/notifications.service';
 import { ProductService } from '../../services/product.service';
@@ -82,7 +83,7 @@ export class ProductCreateComponent implements OnInit {
         {
           validators: [
             Validators.required,
-            Validators.maxLength(50),
+            Validators.maxLength(100),
             Validators.minLength(3),
           ],
           asyncValidators: [],
@@ -92,7 +93,7 @@ export class ProductCreateComponent implements OnInit {
     },
     {
       asyncValidators: [this.productValidador.codeInUse(this.productService)],
-      updateOn: 'change',
+      updateOn: 'blur',
     }
   );
 
@@ -108,51 +109,73 @@ export class ProductCreateComponent implements OnInit {
   save() {
     if (this.productForm.valid) {
       if (this.operacaoCrud == OperacaoCrud.Create) {
-        this.productService
-          .create(this.productForm.value)
-          .subscribe(product => {
-            this.idProduct = product.id
+        this.productService.create(this.productForm.value).subscribe({
+          next: (product) => {
+            this.idProduct = product.id;
             this.dialogRef.close(this.idProduct);
             this.productForm.reset();
-          });
-
+          },
+          error: () => {
+            this.notificationsService.showMessage(
+              'Ocorreu um erro ao salvar o produto!'
+            );
+          },
+        });
       } else if (this.operacaoCrud == OperacaoCrud.Update) {
-        this.productService
-          .update(this.productForm.value)
-          .subscribe(product => {
-            this.idProduct = product.id
+        this.productService.update(this.productForm.value).subscribe({
+          next: (product) => {
+            this.idProduct = product.id;
             this.dialogRef.close(this.idProduct);
             this.productForm.reset();
-          });
+          },
+          error: () => {
+            this.notificationsService.showMessage(
+              'Ocorreu um erro ao salvar o produto!'
+            );
+          },
+        });
       }
     }
   }
 
   delete() {
-    this.productService
-      .deleteById(this.idProduct.toString())
-      .subscribe((products) => {
+    this.productService.deleteById(this.idProduct.toString()).subscribe({
+      next: () => {
         this.dialogRef.close(true);
         this.productForm.reset();
         window.location.reload();
-      });
+      },
+      error: () => {
+        this.notificationsService.showMessage(
+          'Ocorreu um erro ao excluir o produto!'
+        );
+      },
+    });
   }
 
   verificaProduto() {
     if (this.operacaoCrud != OperacaoCrud.Create) {
-      this.productService.getById(this.idProduct).subscribe((products) => {
-        this.productForm.patchValue({
-          id: Number(products!.id!.toString()),
-          code: products.code,
-          description: products.description,
-          price: products?.price?.toString(),
-        });
+      this.productService.getById(this.idProduct).subscribe({
+        next: (products) => {
+          this.productForm.patchValue({
+            id: Number(products!.id!.toString()),
+            code: products.code,
+            description: products.description,
+            price: products?.price?.toString(),
+          });
 
-        if (this.operacaoCrud != OperacaoCrud.Update) {
-          this.productForm.get('code')?.disable();
-          this.productForm.get('description')?.disable();
-          this.productForm.get('price')?.disable();
-        }
+          if (this.operacaoCrud != OperacaoCrud.Update) {
+            this.productForm.get('code')?.disable();
+            this.productForm.get('description')?.disable();
+            this.productForm.get('price')?.disable();
+          }
+        },
+        error: () => {
+          this.operacaoCrud = OperacaoCrud.Create;
+          this.notificationsService.showMessage(
+            'Ocorreu um erro ao carregar o produto!'
+          );
+        },
       });
     }
 

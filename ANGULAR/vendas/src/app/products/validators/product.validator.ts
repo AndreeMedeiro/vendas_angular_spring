@@ -26,16 +26,16 @@ export class ProductValidator {
       const id: Number = form.get('id')?.value;
 
       return productService.getByCode(code).pipe(
-        delay(2000),
+        // delay(2000),
         map((result) => {
           var containsError =
             result.filter((product) => product.id !== id).length > 0;
           if (containsError) {
-            form.controls?.['code'].setErrors({ invalidAsync: true });
+            form.controls?.['code'].setErrors({ codeAlreadyUsed: true });
           } else {
             form.controls?.['code'].setErrors(null);
           }
-          return containsError ? { invalidAsync: true } : null;
+          return containsError ? { codeAlreadyUsed: true } : null;
         })
       );
     };

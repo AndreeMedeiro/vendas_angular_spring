@@ -5,7 +5,8 @@ import { Product } from '../../models/product.model';
 import { ProductCreateComponent } from '../product-create/product-create.component';
 import { ProductService } from '../../services/product.service';
 import { ProductFilterSearch } from '../../models/product-filter-search';
-import { Observable, of } from 'rxjs';
+import { catchError, Observable, of } from 'rxjs';
+import { NotificationsService } from 'src/app/shared/services/notifications/notifications.service';
 
 @Component({
   selector: 'app-products',
@@ -22,19 +23,15 @@ export class ProductsComponent implements OnInit {
 
   constructor(
     public dialog: MatDialog,
-    private productService: ProductService
+    private productService: ProductService,
+    private notificationsService: NotificationsService
   ) {
-    this.products$ = of([])
+    this.products$ = of([]);
   }
 
-  ngOnInit(): void {
-    this.productService.searchProductListEmitter.subscribe((products) => {
-      this.products$ = products;
-      console.log(products);
-    });
-  }
+  ngOnInit(): void {}
 
-  ngOnDestroy() { }
+  ngOnDestroy() {}
 
   add(): void {
     const dialogRef = this.dialog.open(ProductCreateComponent, {
@@ -46,11 +43,10 @@ export class ProductsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((idProduct) => {
       if (!isNaN(idProduct)) {
-        this.productFilterSearch.textSearch = idProduct.toString()
-        this.productFilterSearch.typeSearch = TypeSearchProduct.id
-        this.search(this.productFilterSearch)
+        this.productFilterSearch.textSearch = idProduct.toString();
+        this.productFilterSearch.typeSearch = TypeSearchProduct.id;
+        this.search(this.productFilterSearch);
       }
-
     });
   }
 
@@ -64,9 +60,9 @@ export class ProductsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((idProduct) => {
       if (!isNaN(idProduct)) {
-        this.productFilterSearch.textSearch = idProduct.toString()
-        this.productFilterSearch.typeSearch = TypeSearchProduct.id
-        this.search(this.productFilterSearch)
+        this.productFilterSearch.textSearch = idProduct.toString();
+        this.productFilterSearch.typeSearch = TypeSearchProduct.id;
+        this.search(this.productFilterSearch);
       }
     });
   }
@@ -78,31 +74,55 @@ export class ProductsComponent implements OnInit {
         id: id,
       },
     });
-
-    // dialogRef.afterClosed().subscribe((result) => {
-    //   console.log('The dialog was closed');
-    // });
   }
 
   search(productFilterInfo: ProductFilterSearch) {
-
     switch (productFilterInfo.typeSearch) {
       case TypeSearchProduct.Description: {
-        this.products$ = this.productService.getByDescription(productFilterInfo.textSearch.toString());
+        this.productService
+          .getByDescription(productFilterInfo.textSearch.toString())
+          .subscribe({
+            next: (products) => {
+              if (products != null) this.products$ = of(products);
+            },
+            error: () => {
+              this.notificationsService.showMessage(
+                'Ocorreu um erro ao buscar os produtos!'
+              );
+            },
+          });
         break;
       }
       case TypeSearchProduct.Code: {
-        this.products$ = this.productService.getByCode(productFilterInfo.textSearch.toString())
+        this.productService
+          .getByCode(productFilterInfo.textSearch.toString())
+          .subscribe({
+            next: (products) => {
+              if (products != null) this.products$ = of(products);
+            },
+            error: () => {
+              this.notificationsService.showMessage(
+                'Ocorreu um erro ao buscar os produtos!'
+              );
+            },
+          });
         break;
       }
       case TypeSearchProduct.id: {
-        this.productService.getById(Number(productFilterInfo.textSearch)).subscribe(product => {
-          if (product != null)
-          this.products$ = of([product])
-        })
+        this.productService
+          .getById(Number(productFilterInfo.textSearch))
+          .subscribe({
+            next: (product) => {
+              if (product != null) this.products$ = of([product]);
+            },
+            error: () => {
+              this.notificationsService.showMessage(
+                'Ocorreu um erro ao buscar os produtos!'
+              );
+            },
+          });
         break;
       }
     }
   }
 }
-

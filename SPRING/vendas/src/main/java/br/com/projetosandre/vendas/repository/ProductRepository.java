@@ -1,4 +1,4 @@
-package br.com.projetosandre.vendas.model.repository;
+package br.com.projetosandre.vendas.repository;
 import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;

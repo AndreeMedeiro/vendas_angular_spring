@@ -1,7 +1,7 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { EventEmitter, Injectable } from '@angular/core';
-import { lastValueFrom, Observable, of } from 'rxjs';
-import { catchError, delay, first, map, tap } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { catchError, delay, first } from 'rxjs/operators';
 import { NotificationsService } from 'src/app/shared/services/notifications/notifications.service';
 import { Product } from '../models/product.model';
 
@@ -13,11 +13,9 @@ export class ProductService {
   // private readonly baseUrl = 'http://192.168.0.5:8080/api/products';
   private readonly baseUrl = 'api/products';
 
-  searchProductListEmitter = new EventEmitter<Observable<Product[]>>();
-
   constructor(
     private http: HttpClient,
-    private notiticationService: NotificationsService
+    private notificationsService: NotificationsService
   ) {}
 
   get(): Observable<Product[]> {
@@ -25,8 +23,7 @@ export class ProductService {
   }
 
   create(product: any): Observable<Product> {
-    console.log(product);
-    return this.http.post<Product>(this.baseUrl, product).pipe();
+    return this.http.post<Product>(this.baseUrl, product).pipe(first());
   }
 
   getById(id: number): Observable<Product> {
@@ -36,18 +33,10 @@ export class ProductService {
 
   getByCode(codigo: string) {
     const url = `${this.baseUrl}/Code/${codigo}`;
-    return  this.http.get<Product[]>(url).pipe(delay(1000));
-  }
-
-  getByCode2(codigo: string) {
-    const url = `${this.baseUrl}/Code/${codigo}`;
-    return this.http.get<Product[]>(url).pipe(
-      first(),
-      catchError((e) => {
-        console.log(e);
-        return of([]);
-      })
-    );
+    return  this.http.get<Product[]>(url).pipe(
+      first()
+      // ,delay(1000)
+      );
   }
 
   getByDescription(description: string) {

@@ -8,7 +8,7 @@
       <input matInput placeholder="Código" formControlName="code">
       <mat-spinner matSuffix diameter="20" *ngIf="productForm.status === 'PENDING'"></mat-spinner>
       <mat-error *ngIf="productForm.value.code ==''">O Código é Obrigatorio!</mat-error>
-      <mat-error *ngIf="code?.errors?.['invalidAsync']">O Código já está em uso!</mat-error>
+      <mat-error *ngIf="code?.errors?.['codeAlreadyUsed']">O Código já está em uso!</mat-error>
     </mat-form-field>
     <mat-form-field>
       <mat-label>Descrição</mat-label>
