@@ -1,7 +1,14 @@
 1 - Produtos
- -PAGINANAÇÃO - ok
- -MODULO COMPARTILHADO ok
- -EXPORTAR EXCEL
- -VALIDAR PREENCHIMENTO PESQUISA ok
-- SPINNER ok
- -DASHBOARD
+ -PAGINANAÇÃO - OK
+ -MODULO COMPARTILHADO OK
+ -EXPORTAR EXCEL - P
+ -VALIDAR PREENCHIMENTO PESQUISA - OK
+ -SPINNER OK
+ -DASHBOARD P
+ -mostrar quantidade caractere nos campos OK
+ -criar campo ativO - CANCELADO
+ -criar services OK
+ -criar dto P
+ -campo preco currency no fomr OK
+ -tratar valor menor que 0 OK
+

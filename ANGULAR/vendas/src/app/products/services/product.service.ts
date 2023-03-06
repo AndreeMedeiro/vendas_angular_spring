@@ -23,6 +23,7 @@ export class ProductService {
   }
 
   create(product: any): Observable<Product> {
+    console.log(product)
     return this.http.post<Product>(this.baseUrl, product).pipe(first());
   }
 
@@ -41,7 +42,9 @@ export class ProductService {
 
   getByDescription(description: string) {
     const url = `${this.baseUrl}/description/${description}`;
-    return this.http.get<Product[]>(url).pipe(delay(2000));
+    return this.http.get<Product[]>(url).pipe(
+      // delay(2000)
+      );
   }
 
   update(product: any): Observable<Product> {

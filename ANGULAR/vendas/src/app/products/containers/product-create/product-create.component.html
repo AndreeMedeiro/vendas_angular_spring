@@ -5,14 +5,17 @@
   <form [formGroup]="productForm">
     <mat-form-field>
       <mat-label>Código</mat-label>
-      <input matInput placeholder="Código" formControlName="code">
+      <input matInput maxlength="30" placeholder="Código" formControlName="code" #codeLabel>
+      <mat-hint align="end">{{ codeLabel.value.length }} / 30</mat-hint>
       <mat-spinner matSuffix diameter="20" *ngIf="productForm.status === 'PENDING'"></mat-spinner>
       <mat-error *ngIf="productForm.value.code ==''">O Código é Obrigatorio!</mat-error>
       <mat-error *ngIf="code?.errors?.['codeAlreadyUsed']">O Código já está em uso!</mat-error>
     </mat-form-field>
+
     <mat-form-field>
       <mat-label>Descrição</mat-label>
-      <input matInput placeholder="Descrição" formControlName="description">
+      <input matInput maxlength="50" placeholder="Descrição" formControlName="description" #descriptionLabel>
+      <mat-hint align="end">{{ descriptionLabel.value.length }} / 50</mat-hint>
       <!-- <mat-error *ngIf="!productForm.value.descricao">O Código de Barras é Obrigatorio!</mat-error> -->
       <mat-error *ngIf="productForm!.value!.description! != null && productForm!.value!.description!.length< 3">A Descrição precisa ter ao menos 3 caracteres!</mat-error>
     </mat-form-field>

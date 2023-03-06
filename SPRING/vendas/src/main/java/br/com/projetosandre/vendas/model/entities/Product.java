@@ -8,8 +8,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 
 @Entity(name = "Products")
 public class Product {
@@ -17,19 +17,19 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.SEQUENCE )
     Integer id;
 
-
-    @NotBlank(message = "O Código de Barras é obrigatório!")
-    @NonNull()
+    @NotBlank(message = "O Código é obrigatório!")
+    @Length( max = 30, message = "O Código não pode ter mais que 30 caracteres!")
     @Column(length = 30, nullable = false)
     String code;
 
     @NotBlank(message = "A Descrição é obrigatória!")
-    @NonNull()
-    @Length(min = 3, max = 100)
-    @Column(length = 100, nullable = false)
+    @NonNull
+    @Length(min = 3, max = 50, message = "A descrição precisa ter entre 3 a 100 caracteres!")
+    @Column(length = 50, nullable = false)
     String description;
 
-    // @Min(value = (long) 0.01, message = "O Preco precisa ser maior que 0.00!")
+    @NonNull
+    @Positive
     double price;
 
     public Product() {

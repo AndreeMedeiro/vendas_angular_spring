@@ -1,8 +1,8 @@
 package br.com.projetosandre.vendas.controller;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,78 +14,63 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.projetosandre.vendas.model.entities.Product;
-import br.com.projetosandre.vendas.repository.ProductRepository;
+import br.com.projetosandre.vendas.service.ProductService;
+import io.micrometer.common.lang.NonNull;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
+@Validated
 @RestController
 @RequestMapping(path = "api/products")
 public class ProductController {
 
-    @Autowired
-    private ProductRepository productRepository;
+    private ProductService productService;
+
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
 
     @PostMapping()
     @ResponseStatus(code = HttpStatus.CREATED)
-    public Product add(@RequestBody @Valid Product product) throws Exception {
+    public Product add(@RequestBody @Valid  @NonNull Product product) {
 
-        System.out.println(product);
-        try {
-            // var productDb = productRepository.findTop1ByCodigo(product.getCodigo());
-
-            // System.out.println(product.getCodigo());
-            // System.out.println(productDb);
-            // if(productDb != null){
-            // throw new Exception("O código já está sendo utilizado em outro cadastro!");
-            // }
-
-            productRepository.save(product);
-            System.out.println(product);
-            return productRepository.save(product);
-
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
-        }
+        return this.productService.add(product);
 
     }
 
     @GetMapping()
     public Iterable<Product> getAll() {
-        return productRepository.findAll();
+        return this.productService.getAll();
     }
 
     @GetMapping("/Code/{code}")
     public Optional<Product[]> getByCodigo(@PathVariable String code) {
-        return productRepository.findTop1ByCode(code);
+        return this.productService.getByCode(code);
     }
 
     @GetMapping("/{id}")
-    public Optional<Product> getById(@PathVariable Integer id) {
-        return productRepository.findById(id);
+    public Optional<Product> getById(@PathVariable @Positive Integer id) {
+        return this.productService.getById(id);
     }
 
+    /**
+     * @param description
+     * @return
+     */
     @GetMapping("/description/{description}")
     public Optional<Product[]> getByDescription(@PathVariable String description) {
-        return productRepository.findByDescriptionContaining(description);
+        return this.productService.getByDescription(description);
     }
 
     @PutMapping("/{id}")
-    public Product update(@RequestBody @Valid Product newProduct, @PathVariable Integer id) {
-        System.out.println(id);
-        return productRepository.findById(id)
-                .map(product -> {
-                    product.setDescription(newProduct.getDescription());
-                    product.setCode(newProduct.getCode());
-                    product.setPrice(newProduct.getPrice());
-                    return productRepository.save(product);
-                }).orElseGet(() -> {
-                    newProduct.setId(id);
-                    return productRepository.save(newProduct);
-                });
+    public Product update(@RequestBody @Valid @NotNull Product newProduct, @PathVariable @Positive Integer id) {
+        return this.productService.update(newProduct, id);
     }
 
     @DeleteMapping("/{id}")
-    void deleteEmployee(@PathVariable Integer id) {
-      productRepository.deleteById(id);
+    void delete(@PathVariable @Positive Integer id) {
+        this.productService.delete(id);
     }
 
 }

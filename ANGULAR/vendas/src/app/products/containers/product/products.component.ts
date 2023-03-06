@@ -79,33 +79,24 @@ export class ProductsComponent implements OnInit {
   search(productFilterInfo: ProductFilterSearch) {
     switch (productFilterInfo.typeSearch) {
       case TypeSearchProduct.Description: {
-        this.productService
-          .getByDescription(productFilterInfo.textSearch.toString())
-          .subscribe({
-            next: (products) => {
-              if (products != null) this.products$ = of(products);
-            },
-            error: () => {
-              this.notificationsService.showMessage(
-                'Ocorreu um erro ao buscar os produtos!'
-              );
-            },
-          });
+        this.products$ =   this.productService
+        .getByDescription(productFilterInfo.textSearch.toString()).pipe(
+          catchError(() => {
+            this.notificationsService.showMessage('Ocorreu um erro ao buscar os produtos')
+            return of([])
+          })
+        )
         break;
       }
       case TypeSearchProduct.Code: {
-        this.productService
-          .getByCode(productFilterInfo.textSearch.toString())
-          .subscribe({
-            next: (products) => {
-              if (products != null) this.products$ = of(products);
-            },
-            error: () => {
-              this.notificationsService.showMessage(
-                'Ocorreu um erro ao buscar os produtos!'
-              );
-            },
-          });
+        this.products$ =  this.productService
+          .getByCode(productFilterInfo.textSearch.toString()).pipe(
+            catchError(() => {
+              this.notificationsService.showMessage('Ocorreu um erro ao buscar os produtos')
+              return of([])
+            })
+          )
+
         break;
       }
       case TypeSearchProduct.id: {

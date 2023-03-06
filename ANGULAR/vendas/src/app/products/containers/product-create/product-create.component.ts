@@ -55,7 +55,7 @@ export class ProductCreateComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.verificaProduto();
+    this.loadingInfoProduct();
   }
 
   productForm = this.fb.group(
@@ -72,7 +72,7 @@ export class ProductCreateComponent implements OnInit {
       price: [
         '0.00',
         {
-          validators: [Validators.required, Validators.pattern(this.numRegex)],
+          validators: [Validators.required, Validators.pattern(this.numRegex), Validators.min(0.01)],
           asyncValidators: [],
           updateOn: 'blur',
         },
@@ -83,7 +83,7 @@ export class ProductCreateComponent implements OnInit {
         {
           validators: [
             Validators.required,
-            Validators.maxLength(100),
+            Validators.maxLength(50),
             Validators.minLength(3),
           ],
           asyncValidators: [],
@@ -153,7 +153,7 @@ export class ProductCreateComponent implements OnInit {
     });
   }
 
-  verificaProduto() {
+  loadingInfoProduct() {
     if (this.operacaoCrud != OperacaoCrud.Create) {
       this.productService.getById(this.idProduct).subscribe({
         next: (products) => {
@@ -161,7 +161,7 @@ export class ProductCreateComponent implements OnInit {
             id: Number(products!.id!.toString()),
             code: products.code,
             description: products.description,
-            price: products?.price?.toString(),
+            price: products?.price?.toFixed(2),
           });
 
           if (this.operacaoCrud != OperacaoCrud.Update) {

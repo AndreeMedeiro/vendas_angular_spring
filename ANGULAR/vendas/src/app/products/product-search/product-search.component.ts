@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { OperacaoCrud, TypeSearchProduct } from 'src/app/shared/enum/enum';
-import { ProductCreateComponent } from '../containers/product-create/product-create.component';
+import { OperacaoCrud, TypeSearchProduct } from 'src/app/shared/enum/enum';;
 import { ProductFilterSearch } from '../models/product-filter-search';
 
 @Component({
@@ -10,10 +9,13 @@ import { ProductFilterSearch } from '../models/product-filter-search';
   styleUrls: ['./product-search.component.css'],
 })
 export class ProductSearchComponent {
+
   @Output() infoProductSearch: EventEmitter<ProductFilterSearch> =
     new EventEmitter(false);
 
   @Output() add: EventEmitter<''> = new EventEmitter(false);
+
+  typeInputSearch: String = 'text'
 
   productFilterSearch: ProductFilterSearch = {
     typeSearch: TypeSearchProduct.Code,
@@ -26,8 +28,14 @@ export class ProductSearchComponent {
     this.typeSearchProduct = TypeSearchProduct.Code;
   }
 
-  toggleTipoPesquisa(tipo: TypeSearchProduct) {
+  toggleTypeSearch(tipo: TypeSearchProduct) {
     this.typeSearchProduct = tipo;
+
+    if(this.typeSearchProduct == TypeSearchProduct.id){
+      this.typeInputSearch = "number"
+    }else{
+      this.typeInputSearch = "text"
+    }
   }
 
   addclick(): void {
