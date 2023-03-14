@@ -1,11 +1,12 @@
 package br.com.projetosandre.vendas.service;
 
+import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-import br.com.projetosandre.vendas.dto.mapper.ProductMapper;
 import br.com.projetosandre.vendas.model.entities.Product;
 import br.com.projetosandre.vendas.repository.ProductRepository;
 import jakarta.validation.constraints.NotNull;
@@ -15,31 +16,22 @@ import jakarta.validation.constraints.Positive;
 @Service
 public class ProductService {
 
-    private final ProductRepository productRepository;
-    private final ProductMapper productMapper;
-
-    public ProductService(ProductRepository productRepository, ProductMapper productMapper) {
-        this.productRepository = productRepository;
-        this.productMapper = productMapper;
-    }
-
+    @Autowired
+    private ProductRepository productRepository;
+    
     public Product add (@NotNull Product product){
         return productRepository.save(product);
     }
 
-    public Iterable<Product> getAll() {
-        return productRepository.findAll();
-    }
-
-    public Optional<Product[]> getByCode(@NotNull String code) {
+    public List<Product> getByCode(@NotNull String code) {
         return productRepository.findTop1ByCode(code);
     }
 
     public Optional<Product> getById(@Positive Integer id) {
-        return productRepository.findById(id);//.map(productMapper::toDto);
+        return productRepository.findById(id);
     }
 
-    public Optional<Product[]> getByDescription(String description) {
+    public List<Product> getByDescription(String description) {
         return productRepository.findByDescriptionContaining(description);
     }
 

@@ -5,15 +5,15 @@
       <div class="row">
         <div class="col2">
           <mat-form-field class="full-width">
-            <input matInput placeholder="Nome" formControlName="nome" />
-            <mat-error *ngIf="customerForm.value.nome == ''">O nome é obrigatorio!</mat-error>
+            <input matInput placeholder="Nome" formControlName="name" />
+            <mat-error *ngIf="customerForm.value.name == ''">O nome é obrigatorio!</mat-error>
           </mat-form-field>
         </div>
 
         <div class="col1">
           <mat-form-field class="full-width">
-            <input matInput placeholder="Cpf" formControlName="cpf" mask="CPF_CNPJ" [dropSpecialCharacters]="false" />
-            <mat-error *ngIf="customerForm.value.cpf == ''">O cpf é obrigatorio!</mat-error>
+            <input matInput placeholder="Cpf" formControlName="cpfCnpj" mask="CPF_CNPJ" [dropSpecialCharacters]="false" />
+            <mat-error *ngIf="customerForm.value.cpfCnpj == ''">O cpf é obrigatorio!</mat-error>
           </mat-form-field>
         </div>
       </div>
@@ -28,62 +28,62 @@
 
         <div class="col1">
           <mat-form-field class="full-width">
-            <input matInput placeholder="Celular" formControlName="celular" mask="(00) 00000-0000" [dropSpecialCharacters]="false"/>
-            <mat-error *ngIf="customerForm.value.celular == ''">O celular é obrigatorio!</mat-error>
+            <input matInput placeholder="Telefone" formControlName="tel" mask="(00) 00000-0000" [dropSpecialCharacters]="false"/>
+            <mat-error *ngIf="customerForm.value.tel == ''">O telefone é obrigatorio!</mat-error>
           </mat-form-field>
         </div>
       </div>
 
-      <div class="row" formGroupName="endereco">
+      <div class="row" formGroupName="address">
         <div class="col1">
           <mat-form-field class="full-width">
-            <input matInput placeholder="Cep" formControlName="cep" mask="00.000.000" (blur)="buscaCep()" />
-            <mat-error *ngIf="customerForm.value.endereco?.cep == ''">O celular é obrigatorio!</mat-error>
+            <input matInput placeholder="Cep" formControlName="zipCode" mask="00.000.000" (blur)="buscaCep()" />
+            <mat-error *ngIf="customerForm.value.address?.zipCode == ''">O celular é obrigatorio!</mat-error>
           </mat-form-field>
         </div>
 
         <div class="col2">
           <mat-form-field class="full-width">
-            <input matInput placeholder="Endereço" formControlName="rua" />
-            <mat-error *ngIf="customerForm.value.endereco?.rua == ''">O endereço é obrigatorio!</mat-error>
+            <input matInput placeholder="Endereço" formControlName="street" />
+            <mat-error *ngIf="customerForm.value.address?.street == ''">O endereço é obrigatorio!</mat-error>
           </mat-form-field>
         </div>
       </div>
 
-      <div class="row" formGroupName="endereco">
+      <div class="row" formGroupName="address">
         <div class="col1">
           <mat-form-field class="full-width">
-            <input matInput placeholder="Numero" formControlName="numero" />
-            <mat-error *ngIf="customerForm.value.endereco?.numero == ''">O numero é obrigatorio!</mat-error>
+            <input matInput placeholder="Numero" formControlName="number" />
+            <mat-error *ngIf="customerForm.value.address?.number == ''">O numero é obrigatorio!</mat-error>
           </mat-form-field>
         </div>
 
         <div class="col1">
           <mat-form-field class="full-width">
-            <input matInput placeholder="Complemento" formControlName="complemento" />
-            <mat-error *ngIf="customerForm.value.endereco?.complemento == ''">O complemento é obrigatorio!</mat-error>
+            <input matInput placeholder="Complemento" formControlName="complement" />
+            <mat-error *ngIf="customerForm.value.address?.complement == ''">O complemento é obrigatorio!</mat-error>
           </mat-form-field>
         </div>
 
         <div class="col1">
           <mat-form-field class="full-width">
-            <input matInput placeholder="Bairro" formControlName="bairro" />
-            <mat-error *ngIf="customerForm.value.endereco?.bairro == ''">O celular é obrigatorio!</mat-error>
+            <input matInput placeholder="Bairro" formControlName="district" />
+            <mat-error *ngIf="customerForm.value.address?.district == ''">O celular é obrigatorio!</mat-error>
           </mat-form-field>
         </div>
       </div>
-      <div class="row" formGroupName="endereco">
+      <div class="row" formGroupName="address">
         <div class="col2">
           <mat-form-field class="full-width">
-            <input matInput placeholder="Cidade" formControlName="cidade" />
-            <mat-error *ngIf="customerForm.value.endereco?.cidade == ''">A cidade é obrigatoria!</mat-error>
+            <input matInput placeholder="Cidade" formControlName="city" />
+            <mat-error *ngIf="customerForm.value.address?.city == ''">A cidade é obrigatoria!</mat-error>
           </mat-form-field>
         </div>
 
         <div class="col1">
           <mat-form-field class="full-width">
-            <input matInput placeholder="Estado" formControlName="estado" />
-            <mat-error *ngIf="customerForm.value.endereco?.estado == ''">O estado é obrigatorio!</mat-error>
+            <input matInput placeholder="Estado" formControlName="uf" />
+            <mat-error *ngIf="customerForm.value.address?.uf == ''">O estado é obrigatorio!</mat-error>
           </mat-form-field>
         </div>
       </div>
@@ -103,4 +103,4 @@
   </mat-card-content>
 </mat-card>
 <span >{{operacaoCrud}}</span>
-<!-- {{customerForm.value | json}} -->
+{{customerForm.value | json}}

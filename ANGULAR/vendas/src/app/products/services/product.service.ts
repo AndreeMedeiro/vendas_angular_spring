@@ -23,7 +23,7 @@ export class ProductService {
   }
 
   create(product: any): Observable<Product> {
-    console.log(product)
+
     return this.http.post<Product>(this.baseUrl, product).pipe(first());
   }
 

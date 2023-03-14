@@ -33,6 +33,7 @@ export class ProductListComponent implements OnInit {
   constructor(public dialog: MatDialog, private liveAnnouncer: LiveAnnouncer) {}
 
   ngAfterViewInit() {
+    this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
     this.paginator._intl.itemsPerPageLabel = 'Itens por página';
   }

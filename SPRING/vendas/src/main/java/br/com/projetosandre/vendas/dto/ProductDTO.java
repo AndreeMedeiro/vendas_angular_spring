@@ -10,6 +10,5 @@ import jakarta.validation.constraints.PositiveOrZero;
 public record ProductDTO( Integer id,
 @NotBlank  @Length( max = 30) String code,
 @NotBlank @NotNull @Length(min = 3, max = 50) String description,
-@Null @PositiveOrZero double price) {
-    
+@NotNull @PositiveOrZero double price) {    
 }

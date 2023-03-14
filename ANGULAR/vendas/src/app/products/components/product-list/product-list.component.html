@@ -1,6 +1,5 @@
-<!-- <div *ngIf=" products$ | async as products; else loading"> -->
+
   <div *ngIf=" products ; else loading">
-<!-- <div *ngIf="loading"> -->
   <table mat-table [dataSource]="dataSource"  matSort (matSortChange)="announceSortChange($event)" class="mat-elevation-z8">
     <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef  mat-sort-header = "id"  sortActionDescription = "Classificar por id"> Id </th>

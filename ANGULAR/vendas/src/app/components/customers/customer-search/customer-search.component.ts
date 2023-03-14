@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { OperacaoCrud, TipoPesquisaCliente } from 'src/app/shared/enum/enum';
-import { CustomerCrudComponent } from '../customer-crud/customer-crud.component';
-import { CustomersService } from '../customers.service';
+import { CustomerCrudComponent } from '../../../customers/containers/customer-crud/customer-crud.component';
+import { CustomersService } from '../../../customers/services/customers.service';
 
 @Component({
   selector: 'app-customer-search',

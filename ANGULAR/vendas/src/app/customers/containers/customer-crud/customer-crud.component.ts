@@ -1,6 +1,5 @@
-import { Endereco } from './../../../model/endereco.model';
-import { CustomersService } from './../customers.service';
-import { Customer } from './../../../model/customer.model';
+
+import { CustomersService } from '../../services/customers.service';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -24,18 +23,18 @@ export class CustomerCrudComponent implements OnInit {
 
   customerForm = this.fb.group({
     id: [0],
-    nome: ['', [Validators.required, Validators.maxLength(20), Validators.minLength(5)]],
-    cpf: ['', [Validators.required]],
+    name: ['', [Validators.required, Validators.maxLength(20), Validators.minLength(5)]],
+    cpfCnpj: ['', [Validators.required]],
     email: ['', [Validators.required, Validators.email],],
-    celular: ['', [Validators.required],],
-    endereco: this.fb.group({
-      cep: ['', [Validators.required],],
-      rua: ['', [Validators.required],],
-      numero: ['', [Validators.required, Validators.maxLength(6)],],
-      complemento: ['', [Validators.required,],],
-      bairro: ['', [Validators.required,],],
-      cidade: ['', [Validators.required,],],
-      estado: ['', [Validators.required],],
+    tel: ['', [Validators.required],],
+    address: this.fb.group({
+      zipCode: ['', [Validators.required],],
+      street: ['', [Validators.required],],
+      number: ['', [Validators.required, Validators.maxLength(6)],],
+      complement: ['', [Validators.required,],],
+      district: ['', [Validators.required,],],
+      city: ['', [Validators.required,],],
+      uf: ['', [Validators.required],],
     })
   });
 
@@ -77,16 +76,16 @@ export class CustomerCrudComponent implements OnInit {
   }
 
   buscaCep() {
-    console.log(this.customerForm.value.endereco?.estado)
-    var cep = this.customerForm.value.endereco?.cep ?? ''
+    console.log(this.customerForm.value.address?.uf)
+    var cep = this.customerForm.value.address?.zipCode ?? ''
     console.log(cep)
     this.buscaCepService.get(cep).subscribe(cep => {
       this.customerForm.patchValue({
-        endereco: {
-          rua: cep.logradouro,
-          bairro: cep.bairro,
-          cidade: cep.localidade,
-          estado: cep.uf,
+        address: {
+          street: cep.logradouro,
+          district: cep.bairro,
+          city: cep.localidade,
+          uf: cep.uf,
         }
       });
       console.log(cep)
@@ -156,35 +155,35 @@ export class CustomerCrudComponent implements OnInit {
         .subscribe((customer) => {
           this.customerForm.patchValue({
             id: Number(customer!.id!.toString()),
-            nome: customer.nome,
-            cpf: customer.cpf,
+            name: customer.name,
+            cpfCnpj: customer.cpfCnpj,
             email: customer.email,
-            celular: customer.celular,
-            endereco: {
-              cep: customer.endereco.cep,
-              rua: customer.endereco.rua,
-              numero: customer.endereco.numero,
-              complemento: customer.endereco.complemento,
-              bairro: customer.endereco.bairro,
-              cidade: customer.endereco.cidade,
-              estado: customer.endereco.estado,
+            tel: customer.tel,
+            address: {
+              zipCode: customer.address.zipCode,
+              street: customer.address.street,
+              number: customer.address.number,
+              complement: customer.address.complement,
+              district: customer.address.district,
+              city: customer.address.city,
+              uf: customer.address.uf,
             }
 
           });
 
           if (this.operacaoCrud != OperacaoCrud.Update) {
             this.customerForm.get('id')?.disable();
-            this.customerForm.get('nome')?.disable();
+            this.customerForm.get('name')?.disable();
             this.customerForm.get('email')?.disable();
-            this.customerForm.get('cpf')?.disable();
-            this.customerForm.get('celular')?.disable();
-            this.customerForm.get('endereco.cep')?.disable();
-            this.customerForm.get('endereco.rua')?.disable();
-            this.customerForm.get('endereco.numero')?.disable();
-            this.customerForm.get('endereco.complemento')?.disable();
-            this.customerForm.get('endereco.bairro')?.disable();
-            this.customerForm.get('endereco.cidade')?.disable();
-            this.customerForm.get('endereco.estado')?.disable();
+            this.customerForm.get('cpfCnpj')?.disable();
+            this.customerForm.get('tel')?.disable();
+            this.customerForm.get('address.zipCode')?.disable();
+            this.customerForm.get('address.street')?.disable();
+            this.customerForm.get('address.number')?.disable();
+            this.customerForm.get('address.complement')?.disable();
+            this.customerForm.get('address.district')?.disable();
+            this.customerForm.get('address.city')?.disable();
+            this.customerForm.get('address.uf')?.disable();
           }
         });
     }
@@ -222,7 +221,7 @@ export class CustomerCrudComponent implements OnInit {
   }
 
   async validaCpf(): Promise<boolean>{
-    var customers = await this.customerService.readByCpf(this.customerForm.value?.cpf ??'');
+    var customers = await this.customerService.readByCpf(this.customerForm.value?.cpfCnpj ??'');
 
     if(customers == null || customers.length == 0){ //não existem registros para esse e-mail
       return true;
@@ -238,10 +237,10 @@ export class CustomerCrudComponent implements OnInit {
     // }
 
     if(customers[0].id != this.idCliente){
-      if (this.customerForm.value?.cpf?.length == 14){
-        this.showMessage(`O Cpf ${this.customerForm.value?.cpf} já está sendo utilizado em outro cadastro!`, true)
-      }else if(this.customerForm.value?.cpf?.length == 18){
-        this.showMessage(`O Cnpj ${this.customerForm.value?.cpf} já está sendo utilizado em outro cadastro!`, true)
+      if (this.customerForm.value?.cpfCnpj?.length == 14){
+        this.showMessage(`O Cpf ${this.customerForm.value?.cpfCnpj} já está sendo utilizado em outro cadastro!`, true)
+      }else if(this.customerForm.value?.cpfCnpj?.length == 18){
+        this.showMessage(`O Cnpj ${this.customerForm.value?.cpfCnpj} já está sendo utilizado em outro cadastro!`, true)
       }
 
       return false;

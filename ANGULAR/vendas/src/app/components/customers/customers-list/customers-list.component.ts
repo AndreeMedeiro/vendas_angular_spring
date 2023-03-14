@@ -1,11 +1,10 @@
-import { Endereco } from './../../../model/endereco.model';
-import { CustomerCrudComponent } from 'src/app/components/customers/customer-crud/customer-crud.component';
-import { Customer } from './../../../model/customer.model';
+
+import { CustomerCrudComponent } from 'src/app/customers/containers/customer-crud/customer-crud.component';
+import { Customer } from '../../../customers/models/customer.model';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { CustomersService } from '../customers.service';
+import { CustomersService } from '../../../customers/services/customers.service';
 import { OperacaoCrud } from 'src/app/shared/enum/enum';
-import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-customers-list',

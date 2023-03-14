@@ -1,8 +1,9 @@
-import { Customer } from '../../model/customer.model';
+
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { EventEmitter, Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { catchError, delay, EMPTY, lastValueFrom, map, Observable } from 'rxjs';
+import { Customer } from 'src/app/customers/models/customer.model';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +28,7 @@ export class CustomersService {
     }
 
     create(Customer: any): Observable<Customer> {
+      console.log(Customer)
       return this.http.post<Customer>(this.baseUrl,Customer).pipe(map(obj =>obj),
       catchError(e =>{
         return this.errorHandler(e)
