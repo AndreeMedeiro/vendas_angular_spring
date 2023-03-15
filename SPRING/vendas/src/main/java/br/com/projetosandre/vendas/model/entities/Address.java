@@ -1,22 +1,39 @@
 package br.com.projetosandre.vendas.model.entities;
 
+import org.hibernate.validator.constraints.Length;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
 @Embeddable
 public class Address {
-
+    @Length(max = 11, message = "O cep não pode ter mais que 10 caracteres!")
+    @Column(length = 11, nullable = false)
     String zipCode;
 
+    @Length(max = 100, message = "O rua não pode ter mais que 100 caracteres!")
+    @Column(length = 100, nullable = false)
     String street;
 
+    @Length(max = 10, message = "O numero não pode ter mais que 10 caracteres!")
+    @Column(length = 10, nullable = false)
     String number;
 
+    @Length(max = 30, message = "O complemento não pode ter mais que 30 caracteres!")
+    @Column(length = 30)
     String complement;
 
+    @Length(max = 30, message = "O bairro não pode ter mais que 30 caracteres!")
+    @Column(length = 30, nullable = false)
     String district;
 
+    
+    @Length(max = 30, message = "O bairro não pode ter mais que 30 caracteres!")
+    @Column(length = 30, nullable = false)
     String city;
 
+    @Length(max = 30, message = "O estado não pode ter mais que 30 caracteres!")
+    @Column(length = 30, nullable = false)
     String uf;    
 
     public Address() {

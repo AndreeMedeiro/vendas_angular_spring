@@ -6,7 +6,7 @@ import { MaterialModule } from '../shared/material/material.module';
 import { ProductsComponent } from './containers/product/products.component';
 import { ProductCreateComponent } from './containers/product-create/product-create.component';
 import { ProductListComponent } from './components/product-list/product-list.component';
-import { ProductSearchComponent } from './product-search/product-search.component';
+import { ProductSearchComponent } from './components/product-search/product-search.component';
 import { ProductsRoutingModule } from './products-routing.module';
 
 @NgModule({

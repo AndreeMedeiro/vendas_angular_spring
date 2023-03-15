@@ -1,0 +1,66 @@
+<div class="buttons-card">
+  <div>
+    <mat-form-field appearance="outline">
+      <mat-label>Pesquisa Clientes</mat-label>
+      <input
+        matInput
+        [mask]="maskTextSearch"
+        [dropSpecialCharacters]="false"
+        [(ngModel)]="textSearch"
+        [type]="typeInputTextSearch"
+      />
+    </mat-form-field>
+    <mat-radio-group aria-label="Selecione um criterio">
+      <mat-radio-button
+        value="1"
+        [checked]="typeSearchCustomer == 1"
+        (change)="toggleTypeSearch(1)"
+        >Nome</mat-radio-button
+      >
+      <mat-radio-button
+        value="2"
+        [checked]="typeSearchCustomer == 2"
+        (change)="toggleTypeSearch(2)"
+        >E-mail</mat-radio-button
+      >
+      <mat-radio-button
+        value="3"
+        [checked]="typeSearchCustomer == 3"
+        (change)="toggleTypeSearch(3)"
+        >Cpf/Cnpj</mat-radio-button
+      >
+      <mat-radio-button
+        value="4"
+        [checked]="typeSearchCustomer == 4"
+        (change)="toggleTypeSearch(4)"
+        >Telefone</mat-radio-button
+      >
+      <mat-radio-button
+        value="5"
+        [checked]="typeSearchCustomer == 5"
+        (change)="toggleTypeSearch(5)"
+        >Id</mat-radio-button
+      >
+    </mat-radio-group>
+  </div>
+  <div>
+    <button
+      mat-fab
+      color="primary"
+      (click)="search()"
+      aria-label="Pesquisar Cliente"
+      [disabled]="textSearch.length == 0"
+    >
+      <mat-icon>search</mat-icon>
+    </button>
+    <button
+      mat-fab
+      color="primary"
+      (click)="addClick()"
+      aria-label="Adicionar um cliente"
+      class="buttonAdd"
+    >
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+</div>

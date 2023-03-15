@@ -1,8 +1,8 @@
 
-/* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
+
 .card{
   margin: 20px;
-  /* width: 800px; */
+  width: 800px;
 }
 .full-width{
   width: 100%;
@@ -24,7 +24,7 @@
 }
 
 .col2{
-  flex-grow: 2;
+  flex: 2;
   margin-right: 20px;
 }
 .col3{

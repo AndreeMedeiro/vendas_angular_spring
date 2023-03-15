@@ -68,7 +68,7 @@ export class ProductsComponent implements OnInit {
   }
 
   delete(id: number) {
-    const dialogRef = this.dialog.open(ProductCreateComponent, {
+    this.dialog.open(ProductCreateComponent, {
       data: {
         operacaoCrud: OperacaoCrud.Delete,
         id: id,

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { OperacaoCrud, TypeSearchProduct } from 'src/app/shared/enum/enum';;
-import { ProductFilterSearch } from '../models/product-filter-search';
+import { ProductFilterSearch } from '../../models/product-filter-search';
 
 @Component({
   selector: 'app-product-search',

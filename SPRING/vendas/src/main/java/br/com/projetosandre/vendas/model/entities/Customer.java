@@ -27,9 +27,9 @@ public class Customer {
     @Column(length = 18, nullable = false)
     String cpfCnpj;
 
-    @Length(max = 40, message = "O e-mail não pode ter mais que 40 caracteres!")
+    @Length(max = 80, message = "O e-mail não pode ter mais que 80 caracteres!")
     @Email
-    @Column(length = 40, nullable = false)
+    @Column(length = 80, nullable = false)
     String email;
 
     @Length(max = 18, message = "O telefone não pode ter mais que 18 caracteres!")

@@ -3,31 +3,41 @@
     <mat-card-title>Cadastro de Clientes</mat-card-title>
     <form [formGroup]="customerForm">
       <div class="row">
-        <div class="col2">
+        <div class="col3">
           <mat-form-field class="full-width">
-            <input matInput placeholder="Nome" formControlName="name" />
+            <mat-label>Nome</mat-label>
+            <input matInput placeholder="Nome" formControlName="name"  #lblName maxlength="30" minlength="5"/>
+            <mat-hint align="end">{{lblName.value.length}} / 30</mat-hint>
             <mat-error *ngIf="customerForm.value.name == ''">O nome é obrigatorio!</mat-error>
           </mat-form-field>
         </div>
 
-        <div class="col1">
+        <div class="col2">
           <mat-form-field class="full-width">
+            <mat-label>Cpf/Cnpj</mat-label>
             <input matInput placeholder="Cpf" formControlName="cpfCnpj" mask="CPF_CNPJ" [dropSpecialCharacters]="false" />
+            <mat-spinner matSuffix diameter="20" *ngIf="customerForm.get('cpfCnpj')?.status === 'PENDING'"></mat-spinner>
             <mat-error *ngIf="customerForm.value.cpfCnpj == ''">O cpf é obrigatorio!</mat-error>
+            <mat-error *ngIf="customerForm.get('cpfCnpj')?.errors?.['cpfCnpjAlreadyUsed']">O Cpf está em uso!</mat-error>
           </mat-form-field>
         </div>
       </div>
 
       <div class="row">
-        <div class="col2">
+        <div class="col3">
           <mat-form-field class="full-width">
-            <input matInput placeholder="E-mail" formControlName="email" />
+            <mat-label>E-mail</mat-label>
+            <input matInput placeholder="E-mail" formControlName="email" #lblEmail maxlength="80" />
+            <mat-spinner matSuffix diameter="20" *ngIf="customerForm.get('email')?.status === 'PENDING'"></mat-spinner>
+            <mat-hint align="end">{{lblEmail.value.length}} / 80</mat-hint>
             <mat-error *ngIf="customerForm.value.email == ''">O e-mail é obrigatorio!</mat-error>
+            <mat-error *ngIf="customerForm.get('email')?.errors?.['emailAlreadyUsed']">O e-mail está em uso!</mat-error>
           </mat-form-field>
         </div>
 
-        <div class="col1">
+        <div class="col2">
           <mat-form-field class="full-width">
+            <mat-label>Telefone</mat-label>
             <input matInput placeholder="Telefone" formControlName="tel" mask="(00) 00000-0000" [dropSpecialCharacters]="false"/>
             <mat-error *ngIf="customerForm.value.tel == ''">O telefone é obrigatorio!</mat-error>
           </mat-form-field>
@@ -37,14 +47,19 @@
       <div class="row" formGroupName="address">
         <div class="col1">
           <mat-form-field class="full-width">
-            <input matInput placeholder="Cep" formControlName="zipCode" mask="00.000.000" (blur)="buscaCep()" />
-            <mat-error *ngIf="customerForm.value.address?.zipCode == ''">O celular é obrigatorio!</mat-error>
+            <mat-label>Cep</mat-label>
+            <input matInput placeholder="Cep" formControlName="zipCode" mask="00.000.000" (blur)="getCep()" #lblCep maxlength="10" />
+            <mat-spinner matSuffix diameter="20" *ngIf="isLoadingCep"></mat-spinner>
+            <mat-hint align="end">{{lblCep.value.length}} / 10</mat-hint>
+            <mat-error *ngIf="customerForm.value.address?.zipCode == ''">O cep é obrigatorio!</mat-error>
           </mat-form-field>
         </div>
-
         <div class="col2">
+
           <mat-form-field class="full-width">
-            <input matInput placeholder="Endereço" formControlName="street" />
+            <mat-label>Endereço</mat-label>
+            <input matInput placeholder="Endereço" formControlName="street" #lblStreet maxlength="100" />
+            <mat-hint align="end">{{lblStreet.value.length}} / 100</mat-hint>
             <mat-error *ngIf="customerForm.value.address?.street == ''">O endereço é obrigatorio!</mat-error>
           </mat-form-field>
         </div>
@@ -53,37 +68,47 @@
       <div class="row" formGroupName="address">
         <div class="col1">
           <mat-form-field class="full-width">
-            <input matInput placeholder="Numero" formControlName="number" />
+            <mat-label>Numero</mat-label>
+            <input matInput placeholder="Numero" formControlName="number" #lblNumber maxlength="10"/>
+            <mat-hint align="end">{{lblNumber.value.length}} / 10</mat-hint>
             <mat-error *ngIf="customerForm.value.address?.number == ''">O numero é obrigatorio!</mat-error>
           </mat-form-field>
         </div>
 
-        <div class="col1">
+        <div class="col2">
           <mat-form-field class="full-width">
-            <input matInput placeholder="Complemento" formControlName="complement" />
+            <mat-label>Complemento</mat-label>
+            <input matInput placeholder="Complemento" formControlName="complement" #lblComplement maxlength="30" />
+            <mat-hint align="end">{{lblComplement.value.length}} / 30</mat-hint>
             <mat-error *ngIf="customerForm.value.address?.complement == ''">O complemento é obrigatorio!</mat-error>
           </mat-form-field>
         </div>
 
-        <div class="col1">
+        <div class="col2">
           <mat-form-field class="full-width">
-            <input matInput placeholder="Bairro" formControlName="district" />
-            <mat-error *ngIf="customerForm.value.address?.district == ''">O celular é obrigatorio!</mat-error>
+            <mat-label>Bairro</mat-label>
+            <input matInput placeholder="Bairro" formControlName="district" #lblDistrict maxlength="30" />
+            <mat-hint align="end">{{lblDistrict.value.length}} / 30</mat-hint>
+            <mat-error *ngIf="customerForm.value.address?.district == ''">O bairro é obrigatorio!</mat-error>
           </mat-form-field>
         </div>
       </div>
       <div class="row" formGroupName="address">
         <div class="col2">
           <mat-form-field class="full-width">
-            <input matInput placeholder="Cidade" formControlName="city" />
+            <mat-label>Cidade</mat-label>
+            <input matInput placeholder="Cidade" formControlName="city" #lblCity maxlength="30"/>
+            <mat-hint align="end">{{lblCity.value.length}} / 30</mat-hint>
             <mat-error *ngIf="customerForm.value.address?.city == ''">A cidade é obrigatoria!</mat-error>
           </mat-form-field>
         </div>
 
         <div class="col1">
           <mat-form-field class="full-width">
-            <input matInput placeholder="Estado" formControlName="uf" />
+            <mat-label>Estado</mat-label>
+            <input matInput placeholder="Estado" formControlName="uf" #lblUf maxlength="30"/>
             <mat-error *ngIf="customerForm.value.address?.uf == ''">O estado é obrigatorio!</mat-error>
+            <mat-hint align="end">{{lblUf.value.length}} / 30</mat-hint>
           </mat-form-field>
         </div>
       </div>
@@ -103,4 +128,4 @@
   </mat-card-content>
 </mat-card>
 <span >{{operacaoCrud}}</span>
-{{customerForm.value | json}}
+<!-- {{customerForm.value | json}} -->

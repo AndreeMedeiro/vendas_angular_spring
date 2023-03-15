@@ -1,7 +1,6 @@
-import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { delay } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,13 +9,12 @@ export class BuscaCepService {
 
   private baseUrl = 'https://viacep.com.br/ws/'
 
-  constructor(private http: HttpClient,
-    private snackBar: MatSnackBar) { }
+  constructor(private http: HttpClient) { }
 
 
-  get(id:string): Observable<any>{
+  get(id:string){
       const url = `${this.baseUrl}/${id}/json`
-      return this.http.get<any>(url)
+      return this.http.get<any>(url).pipe(delay(1000))
     }
 
 }

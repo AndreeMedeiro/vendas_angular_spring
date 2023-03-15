@@ -5,11 +5,11 @@ export enum OperacaoCrud {
     Delete = 4
 }
 
-export enum TipoPesquisaCliente {
-  Nome = 1,
+export enum TypeSearchCustomer  {
+  Name = 1,
   Email = 2,
-  Cpf = 3,
-  Celular = 4,
+  CpfCnpj = 3,
+  Tel = 4,
   Id = 5
 }
 
@@ -18,4 +18,5 @@ export enum TypeSearchProduct {
   Code = 2,
   Description = 3,
 }
+
 

@@ -1,0 +1,14 @@
+.buttons-card{
+  display: flex;
+  justify-content: space-between;
+}
+
+.buttonAdd{
+  margin-left: 15px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
